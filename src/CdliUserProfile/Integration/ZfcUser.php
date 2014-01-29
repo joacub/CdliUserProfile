@@ -67,17 +67,19 @@ class ZfcUser extends AbstractIntegration implements IntegrationInterface
 
         // Get User Account details
         $user = $this->getProfileService()->getUser();
-        $userHydrator = $this->getServiceLocator()->get('zfcuser_user_hydrator');
-        $userData = $userHydrator->extract($user);
-        unset($userData['password']);
-
-        $form->setData($userData);
-
-        $obj = new ProfileSection();
-        $obj->setForm($form);
-        $obj->setViewScript('cdli-user-profile/profile/section/zfcuser');
-        $obj->setViewScriptFormKey('registerForm');
-        $e->getTarget()->addSection('zfcuser', $obj);
+        if($user) {
+            $userHydrator = $this->getServiceLocator()->get('zfcuser_user_hydrator');
+            $userData = $userHydrator->extract($user);
+            unset($userData['password']);
+    
+            $form->setData($userData);
+    
+            $obj = new ProfileSection();
+            $obj->setForm($form);
+            $obj->setViewScript('cdli-user-profile/profile/section/zfcuser');
+            $obj->setViewScriptFormKey('registerForm');
+            $e->getTarget()->addSection('zfcuser', $obj);
+        }
     }
 
 }
